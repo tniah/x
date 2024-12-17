@@ -3,7 +3,7 @@ package cipherx_test
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	"github.com/tniah/iam-oauth-api/pkg/utils/cipherx"
+	"github.com/tniah/x/utils/cipherx"
 	"testing"
 )
 
