@@ -1,0 +1,50 @@
+package oauthsdk
+
+import (
+	"github.com/tniah/x/sdk"
+	"google.golang.org/grpc"
+)
+
+type Manager interface {
+	ClientManager() ClientManager
+	Channel() *grpc.ClientConn
+	CloseChannel() error
+}
+
+type manager struct {
+	clientManager     ClientManager
+	channel           *grpc.ClientConn
+	unaryInterceptors []grpc.UnaryClientInterceptor
+}
+
+func NewManager(targetHost string, opts ...Option) (Manager, error) {
+	m := &manager{}
+	for _, opt := range opts {
+		opt(m)
+	}
+
+	sb := sdk.NewGrpcClientBuilder()
+	sb.WithInsecure()
+	sb.WithUnaryInterceptors(m.unaryInterceptors...)
+
+	channel, err := sb.GetConn(targetHost)
+	if err != nil {
+		return nil, err
+	}
+
+	m.channel = channel
+	m.clientManager = newOAuth2ClientManager(m.channel)
+	return m, nil
+}
+
+func (m *manager) ClientManager() ClientManager {
+	return m.clientManager
+}
+
+func (m *manager) Channel() *grpc.ClientConn {
+	return m.channel
+}
+
+func (m *manager) CloseChannel() error {
+	return m.channel.Close()
+}
