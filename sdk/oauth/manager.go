@@ -8,7 +8,7 @@ import (
 type Manager interface {
 	ClientManager() ClientManager
 	Channel() *grpc.ClientConn
-	CloseChannel() error
+	Clean() error
 }
 
 type manager struct {
@@ -45,6 +45,6 @@ func (m *manager) Channel() *grpc.ClientConn {
 	return m.channel
 }
 
-func (m *manager) CloseChannel() error {
+func (m *manager) Clean() error {
 	return m.channel.Close()
 }
