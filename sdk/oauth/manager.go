@@ -6,7 +6,7 @@ import (
 )
 
 type Manager interface {
-	ClientManager() ClientManager
+	OAuthClient() ClientManager
 	Channel() *grpc.ClientConn
 	Clean() error
 }
@@ -17,7 +17,7 @@ type manager struct {
 	unaryInterceptors []grpc.UnaryClientInterceptor
 }
 
-func NewManager(targetHost string, opts ...Option) (Manager, error) {
+func New(targetHost string, opts ...Option) (Manager, error) {
 	m := &manager{}
 	for _, opt := range opts {
 		opt(m)
@@ -37,7 +37,7 @@ func NewManager(targetHost string, opts ...Option) (Manager, error) {
 	return m, nil
 }
 
-func (m *manager) ClientManager() ClientManager {
+func (m *manager) OAuthClient() ClientManager {
 	return m.clientManager
 }
 
