@@ -2,7 +2,6 @@ package httperrors
 
 import (
 	"fmt"
-	domainerrors "github.com/tniah/iam-domain/errors"
 	"net/http"
 )
 
@@ -10,11 +9,11 @@ type HttpError struct {
 	httpCode int
 	Code     int    `json:"code"`
 	Message  string `json:"message"`
-	Details  []any  `json:"details"`
+	Details  []any  `json:"details,omitempty"`
 }
 
 func (he *HttpError) Error() string {
-	return fmt.Sprintf("http error: httpCode=%d, message=%s, code=%d", he.httpCode, he.Message, he.Code)
+	return fmt.Sprintf("http error: httpCode=%d message=%s code=%d", he.httpCode, he.Message, he.Code)
 }
 
 func (he *HttpError) HttpCode() int {
@@ -47,31 +46,7 @@ func FromHttpCode(httpCode int, msg string) (*HttpError, error) {
 	}, nil
 }
 
-func (he *HttpError) WithErrorInfo(de *domainerrors.ErrorInfo) *HttpError {
-	for i, detail := range he.Details {
-		switch detail.(type) {
-		case *domainerrors.ErrorInfo:
-			he.Details[i] = de
-			return he
-		default:
-			continue
-		}
-	}
-
-	he.Details = append(he.Details, de)
-	return he
-}
-
-func (he *HttpError) WithInvalidArgument(de *domainerrors.InvalidArgument) *HttpError {
-	for i, detail := range he.Details {
-		switch detail.(type) {
-		case *domainerrors.InvalidArgument:
-			he.Details[i] = de
-			return he
-		default:
-			continue
-		}
-	}
-	he.Details = append(he.Details, de)
+func (he *HttpError) WithDetails(details ...any) *HttpError {
+	he.Details = append(he.Details, details...)
 	return he
 }
