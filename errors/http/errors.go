@@ -2,6 +2,7 @@ package httperrors
 
 import (
 	"fmt"
+	domainerrors "github.com/tniah/iam-domain/errors"
 	"net/http"
 )
 
@@ -20,46 +21,57 @@ func (he *HttpError) HttpCode() int {
 	return he.httpCode
 }
 
-func NewInvalidArgumentError(msg string, domain, service string, violations ...*InvalidField) *HttpError {
-	details := []any{
-		&ErrorInfo{
-			Reason: ReasonInvalidArgument,
-			Domain: domain,
-			Metadata: map[string]string{
-				FieldService: service,
-			},
-		},
+func New(httpCode int, msg string) *HttpError {
+	he, err := FromHttpCode(httpCode, msg)
+	if err != nil {
+		panic(err)
 	}
 
-	if len(violations) > 0 {
-		details = append(details, &InvalidArgument{
-			Fields: violations,
-		})
-	}
-
-	return &HttpError{
-		httpCode: http.StatusBadRequest,
-		Code:     http.StatusBadRequest,
-		Message:  msg,
-		Details:  details,
-	}
+	return he
 }
 
-func NewInternalServerError(msg, domain, service string) *HttpError {
-	details := []any{
-		&ErrorInfo{
-			Reason: ReasonInternalError,
-			Domain: domain,
-			Metadata: map[string]string{
-				FieldService: service,
-			},
-		},
+func FromHttpCode(httpCode int, msg string) (*HttpError, error) {
+	statusTxt := http.StatusText(httpCode)
+	if statusTxt == "" {
+		return nil, fmt.Errorf("invalid http code: httpCode=%d", httpCode)
+	}
+
+	if msg == "" {
+		msg = statusTxt
 	}
 
 	return &HttpError{
-		httpCode: http.StatusInternalServerError,
-		Code:     http.StatusInternalServerError,
+		httpCode: httpCode,
+		Code:     httpCode,
 		Message:  msg,
-		Details:  details,
+	}, nil
+}
+
+func (he *HttpError) WithErrorInfo(de *domainerrors.ErrorInfo) *HttpError {
+	for i, detail := range he.Details {
+		switch detail.(type) {
+		case *domainerrors.ErrorInfo:
+			he.Details[i] = de
+			return he
+		default:
+			continue
+		}
 	}
+
+	he.Details = append(he.Details, de)
+	return he
+}
+
+func (he *HttpError) WithInvalidArgument(de *domainerrors.InvalidArgument) *HttpError {
+	for i, detail := range he.Details {
+		switch detail.(type) {
+		case *domainerrors.InvalidArgument:
+			he.Details[i] = de
+			return he
+		default:
+			continue
+		}
+	}
+	he.Details = append(he.Details, de)
+	return he
 }
