@@ -10,7 +10,6 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/gjson v1.18.0
-	github.com/tniah/iam-domain v0.0.0-20241223104324-345bda4c6724
 	github.com/tniah/iam-grpc v0.0.0-20241217082330-7fa79eef92a8
 	go.uber.org/zap v1.27.0
 	google.golang.org/grpc v1.69.0
