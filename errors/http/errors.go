@@ -53,7 +53,6 @@ func FromHttpCode(httpCode int, msg, reason string) (*HttpError, error) {
 	}, nil
 }
 
-func (he *HttpError) WithDetails(details ...any) *HttpError {
+func (he *HttpError) WithDetails(details ...any) {
 	he.Details = append(he.Details, details...)
-	return he
 }
