@@ -7,9 +7,11 @@ import (
 
 type HttpError struct {
 	httpCode int
-	Code     int    `json:"code"`
-	Message  string `json:"message"`
-	Details  []any  `json:"details,omitempty"`
+	// reason - the reason of the error.
+	reason  string
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Details []any  `json:"details,omitempty"`
 }
 
 func (he *HttpError) Error() string {
@@ -20,8 +22,12 @@ func (he *HttpError) HttpCode() int {
 	return he.httpCode
 }
 
-func New(httpCode int, msg string) *HttpError {
-	he, err := FromHttpCode(httpCode, msg)
+func (he *HttpError) Reason() string {
+	return he.reason
+}
+
+func New(httpCode int, msg, reason string) *HttpError {
+	he, err := FromHttpCode(httpCode, msg, reason)
 	if err != nil {
 		panic(err)
 	}
@@ -29,7 +35,7 @@ func New(httpCode int, msg string) *HttpError {
 	return he
 }
 
-func FromHttpCode(httpCode int, msg string) (*HttpError, error) {
+func FromHttpCode(httpCode int, msg, reason string) (*HttpError, error) {
 	statusTxt := http.StatusText(httpCode)
 	if statusTxt == "" {
 		return nil, fmt.Errorf("invalid http code: httpCode=%d", httpCode)
@@ -41,6 +47,7 @@ func FromHttpCode(httpCode int, msg string) (*HttpError, error) {
 
 	return &HttpError{
 		httpCode: httpCode,
+		reason:   reason,
 		Code:     httpCode,
 		Message:  msg,
 	}, nil
