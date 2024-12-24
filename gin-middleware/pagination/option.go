@@ -8,6 +8,8 @@ const (
 	MinPage         = 1
 	MinPageSize     = 1
 	MaxPageSize     = 100
+	ErrReason       = "INVALID_ARGUMENT"
+	ErrMsg          = "Invalid pagination request."
 )
 
 type options struct {
@@ -18,6 +20,8 @@ type options struct {
 	MinPage         int
 	MinPageSize     int
 	MaxPageSize     int
+	ErrReason       string
+	ErrMsg          string
 }
 
 type Option func(*options)
@@ -61,5 +65,17 @@ func WithMinPageSize(minPageSize int) Option {
 func WithMaxPageSize(maxPageSize int) Option {
 	return func(opts *options) {
 		opts.MaxPageSize = maxPageSize
+	}
+}
+
+func WithErrReason(reason string) Option {
+	return func(opts *options) {
+		opts.ErrReason = reason
+	}
+}
+
+func WithErrMessage(msg string) Option {
+	return func(opts *options) {
+		opts.ErrMsg = msg
 	}
 }

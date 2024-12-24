@@ -9,11 +9,6 @@ import (
 	"strconv"
 )
 
-const (
-	errReasonInvalidArgument = "INVALID_ARGUMENT"
-	errMsgInvalidRequest     = "Invalid pagination request"
-)
-
 func Paginator(customOpts ...Option) gin.HandlerFunc {
 	opts := options{
 		PageText:        PageText,
@@ -23,6 +18,8 @@ func Paginator(customOpts ...Option) gin.HandlerFunc {
 		MinPage:         MinPage,
 		MinPageSize:     MinPageSize,
 		MaxPageSize:     MaxPageSize,
+		ErrReason:       ErrReason,
+		ErrMsg:          ErrMsg,
 	}
 	for _, opt := range customOpts {
 		opt(&opts)
@@ -66,7 +63,7 @@ type paginator struct {
 }
 
 func (p *paginator) abortWithError(field string, err error) {
-	he := httperrors.New(http.StatusBadRequest, errMsgInvalidRequest, errReasonInvalidArgument)
+	he := httperrors.New(http.StatusBadRequest, p.opts.ErrMsg, p.opts.ErrReason)
 	he.WithDetails(&domainerrors.InvalidArgument{
 		Fields: []*domainerrors.FieldViolation{{
 			Field:       field,
