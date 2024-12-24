@@ -140,6 +140,10 @@ github.com/tniah/iam-domain v0.0.0-20241224021813-0b2943999c5b h1:EoJkgSX7sx+Q+C
 github.com/tniah/iam-domain v0.0.0-20241224021813-0b2943999c5b/go.mod h1:REhQNlidzPfhV3oK8Sd62FH9GeAjpdNZTiQv6gURVzE=
 github.com/tniah/iam-domain v0.0.0-20241224070736-ac61a638d9d5 h1:q5Ksyd34bpflfQ3jIfi/rTYoDbfj8xImvdu4lI86gyc=
 github.com/tniah/iam-domain v0.0.0-20241224070736-ac61a638d9d5/go.mod h1:0yuk+DV7LYSHrgeLf/ecl4RqhWVZxU4N1D1v77L0Eg4=
+github.com/tniah/iam-domain v0.0.0-20241224071252-4d942ff7fc81 h1:w2RHXFH3cXprBgtRbtncSbpKWMkblbmDj8yi/jIH+gI=
+github.com/tniah/iam-domain v0.0.0-20241224071252-4d942ff7fc81/go.mod h1:0yuk+DV7LYSHrgeLf/ecl4RqhWVZxU4N1D1v77L0Eg4=
+github.com/tniah/iam-domain v0.0.0-20241224080609-5e8a409fcbb2 h1:XDRTXOS+S+IEizmUGpKRroZAaNlYHDNJPPyJXeXv3ig=
+github.com/tniah/iam-domain v0.0.0-20241224080609-5e8a409fcbb2/go.mod h1:0yuk+DV7LYSHrgeLf/ecl4RqhWVZxU4N1D1v77L0Eg4=
 github.com/tniah/iam-grpc v0.0.0-20241217082330-7fa79eef92a8 h1:AGhjnL0UCm2UO/kvTEPFkj5XgvdzuaIqwVLszaXLSXw=
 github.com/tniah/iam-grpc v0.0.0-20241217082330-7fa79eef92a8/go.mod h1:YN5UP3ZLXo9l6AOZ6PdwQctQ1+LywWYgjXuX4BZUZ5c=
 github.com/twitchyliquid64/golang-asm v0.15.1 h1:SU5vSMR7hnwNxj24w34ZyCi/FmDZTkS4MhqMhdFk5YI=
