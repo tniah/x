@@ -97,7 +97,7 @@ func (p *paginator) getIntValueWithDefault(key string, defaultValue string) (int
 
 func (p *paginator) validatePage(page int) error {
 	if page < p.opts.MinPage {
-		return fmt.Errorf("page must be greater or equal than %d", p.opts.MinPage)
+		return fmt.Errorf("%s must be greater or equal than %d", p.opts.PageText, p.opts.MinPage)
 	}
 
 	return nil
@@ -105,7 +105,7 @@ func (p *paginator) validatePage(page int) error {
 
 func (p *paginator) validatePageSize(pageSize int) error {
 	if pageSize < p.opts.MinPageSize || pageSize > p.opts.MaxPageSize {
-		return fmt.Errorf("page size must be between %d and %d", p.opts.MinPageSize, p.opts.MaxPageSize)
+		return fmt.Errorf("%s must be between %d and %d", p.opts.PageSizeText, p.opts.MinPageSize, p.opts.MaxPageSize)
 	}
 
 	return nil
