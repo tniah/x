@@ -46,7 +46,7 @@ require (
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
-	github.com/tniah/iam-domain v0.0.0-20241225043325-71f54d9206de // indirect
+	github.com/tniah/iam-domain v0.0.0-20241225065341-20d46f39f8ac // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
