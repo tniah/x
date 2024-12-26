@@ -3,7 +3,6 @@ package pagination
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/tniah/iam-domain/errors"
 	httperrors "github.com/tniah/x/errors/http"
 	"net/http"
 	"strconv"
@@ -11,15 +10,16 @@ import (
 
 func Paginator(customOpts ...Option) gin.HandlerFunc {
 	opts := options{
-		PageText:        PageText,
-		PageSizeText:    PageSizeText,
-		DefaultPage:     DefaultPage,
-		DefaultPageSize: DefaultPageSize,
-		MinPage:         MinPage,
-		MinPageSize:     MinPageSize,
-		MaxPageSize:     MaxPageSize,
-		ErrReason:       ErrReason,
-		ErrMsg:          ErrMsg,
+		PageText:         PageText,
+		PageSizeText:     PageSizeText,
+		DefaultPage:      DefaultPage,
+		DefaultPageSize:  DefaultPageSize,
+		MinPage:          MinPage,
+		MinPageSize:      MinPageSize,
+		MaxPageSize:      MaxPageSize,
+		ErrReason:        ErrReason,
+		ErrMsg:           ErrMsg,
+		FieldNameService: FieldNameService,
 	}
 	for _, opt := range customOpts {
 		opt(&opts)
@@ -64,14 +64,15 @@ type paginator struct {
 
 func (p *paginator) abortWithError(field string, err error) {
 	he := httperrors.New(http.StatusBadRequest, p.opts.ErrMsg, p.opts.ErrReason)
-	he.WithDetails(&domainerrors.InvalidArgument{
-		Fields: []*domainerrors.FieldViolation{{
-			Field:       field,
-			Description: err.Error(),
-		}},
+	he.WithDetails(&httperrors.ErrorInfo{
+		Reason: he.Reason(),
+		Domain: p.opts.ErrInfoDomain,
+		Metadata: map[string]string{
+			p.opts.FieldNameService: p.opts.ErrInfoService,
+		},
 	})
-	p.ctx.Abort()
-	_ = p.ctx.Error(he)
+	p.ctx.AbortWithStatusJSON(he.HttpCode(), he)
+	return
 }
 
 func (p *paginator) getPageFromQuery() (int, error) {

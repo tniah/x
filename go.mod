@@ -11,6 +11,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/gjson v1.18.0
+	github.com/tniah/iam-domain v0.0.0-20241226081420-b1349cb3de72
 	github.com/tniah/iam-grpc v0.0.0-20241217082330-7fa79eef92a8
 	go.uber.org/zap v1.27.0
 	google.golang.org/grpc v1.69.0
@@ -46,7 +47,6 @@ require (
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
-	github.com/tniah/iam-domain v0.0.0-20241225065341-20d46f39f8ac // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	go.uber.org/multierr v1.10.0 // indirect

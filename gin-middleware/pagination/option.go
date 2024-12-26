@@ -1,27 +1,31 @@
 package pagination
 
 const (
-	PageText        = "page"
-	PageSizeText    = "page_size"
-	DefaultPage     = 1
-	DefaultPageSize = 10
-	MinPage         = 1
-	MinPageSize     = 1
-	MaxPageSize     = 100
-	ErrReason       = "INVALID_ARGUMENT"
-	ErrMsg          = "Invalid pagination request."
+	PageText         = "page"
+	PageSizeText     = "page_size"
+	DefaultPage      = 1
+	DefaultPageSize  = 10
+	MinPage          = 1
+	MinPageSize      = 1
+	MaxPageSize      = 100
+	ErrReason        = "INVALID_ARGUMENT"
+	ErrMsg           = "Invalid pagination request."
+	FieldNameService = "service"
 )
 
 type options struct {
-	PageText        string
-	PageSizeText    string
-	DefaultPage     int
-	DefaultPageSize int
-	MinPage         int
-	MinPageSize     int
-	MaxPageSize     int
-	ErrReason       string
-	ErrMsg          string
+	PageText         string
+	PageSizeText     string
+	DefaultPage      int
+	DefaultPageSize  int
+	MinPage          int
+	MinPageSize      int
+	MaxPageSize      int
+	ErrReason        string
+	ErrMsg           string
+	ErrInfoDomain    string
+	ErrInfoService   string
+	FieldNameService string
 }
 
 type Option func(*options)
@@ -77,5 +81,17 @@ func WithErrReason(reason string) Option {
 func WithErrMessage(msg string) Option {
 	return func(opts *options) {
 		opts.ErrMsg = msg
+	}
+}
+
+func WithErrInfoDomain(domain string) Option {
+	return func(opts *options) {
+		opts.ErrInfoDomain = domain
+	}
+}
+
+func WithErrInfoService(service string) Option {
+	return func(opts *options) {
+		opts.ErrInfoService = service
 	}
 }
