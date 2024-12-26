@@ -9,8 +9,8 @@ type HttpError struct {
 	httpCode int
 	// reason - the reason of the error.
 	reason  string
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Code    int    `json:"code,omitempty"`
+	Message string `json:"message,omitempty"`
 	Details []any  `json:"details,omitempty"`
 }
 
