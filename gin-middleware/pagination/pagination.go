@@ -18,7 +18,6 @@ func Paginator(customOpts ...Option) gin.HandlerFunc {
 		MinPageSize:      MinPageSize,
 		MaxPageSize:      MaxPageSize,
 		ErrReason:        ErrReason,
-		ErrMsg:           ErrMsg,
 		FieldNameService: FieldNameService,
 	}
 	for _, opt := range customOpts {
@@ -33,23 +32,23 @@ func Paginator(customOpts ...Option) gin.HandlerFunc {
 
 		page, err := p.getPageFromQuery()
 		if err != nil {
-			p.abortWithError(p.opts.PageText, err)
+			p.abortWithError(err)
 			return
 		}
 
 		if err := p.validatePage(page); err != nil {
-			p.abortWithError(p.opts.PageText, err)
+			p.abortWithError(err)
 			return
 		}
 
 		pageSize, err := p.getPageSizeFromQuery()
 		if err != nil {
-			p.abortWithError(p.opts.PageSizeText, err)
+			p.abortWithError(err)
 			return
 		}
 
 		if err := p.validatePageSize(pageSize); err != nil {
-			p.abortWithError(p.opts.PageSizeText, err)
+			p.abortWithError(err)
 		}
 
 		p.setPageAndPageSize(page, pageSize)
@@ -62,8 +61,8 @@ type paginator struct {
 	opts options
 }
 
-func (p *paginator) abortWithError(field string, err error) {
-	he := httperrors.New(http.StatusBadRequest, p.opts.ErrMsg, p.opts.ErrReason)
+func (p *paginator) abortWithError(err error) {
+	he := httperrors.New(http.StatusBadRequest, err.Error(), p.opts.ErrReason)
 	he.WithDetails(&httperrors.ErrorInfo{
 		Reason: he.Reason(),
 		Domain: p.opts.ErrInfoDomain,

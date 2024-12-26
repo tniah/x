@@ -9,7 +9,6 @@ const (
 	MinPageSize      = 1
 	MaxPageSize      = 100
 	ErrReason        = "INVALID_ARGUMENT"
-	ErrMsg           = "Invalid pagination request."
 	FieldNameService = "service"
 )
 
@@ -22,7 +21,6 @@ type options struct {
 	MinPageSize      int
 	MaxPageSize      int
 	ErrReason        string
-	ErrMsg           string
 	ErrInfoDomain    string
 	ErrInfoService   string
 	FieldNameService string
@@ -75,12 +73,6 @@ func WithMaxPageSize(maxPageSize int) Option {
 func WithErrReason(reason string) Option {
 	return func(opts *options) {
 		opts.ErrReason = reason
-	}
-}
-
-func WithErrMessage(msg string) Option {
-	return func(opts *options) {
-		opts.ErrMsg = msg
 	}
 }
 
