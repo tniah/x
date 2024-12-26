@@ -95,3 +95,9 @@ func WithErrInfoService(service string) Option {
 		opts.ErrInfoService = service
 	}
 }
+
+func WithFieldNameService(fieldName string) Option {
+	return func(opts *options) {
+		opts.FieldNameService = fieldName
+	}
+}
