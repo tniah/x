@@ -26,8 +26,8 @@ func (he *HttpError) Reason() string {
 	return he.reason
 }
 
-func New(httpCode int, msg, reason string) *HttpError {
-	he, err := FromHttpCode(httpCode, msg, reason)
+func New(httpCode int, reason, msg string) *HttpError {
+	he, err := FromHttpCode(httpCode, reason, msg)
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +35,7 @@ func New(httpCode int, msg, reason string) *HttpError {
 	return he
 }
 
-func FromHttpCode(httpCode int, msg, reason string) (*HttpError, error) {
+func FromHttpCode(httpCode int, reason, msg string) (*HttpError, error) {
 	statusTxt := http.StatusText(httpCode)
 	if statusTxt == "" {
 		return nil, fmt.Errorf("invalid http code: httpCode=%d", httpCode)
