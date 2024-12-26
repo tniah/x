@@ -86,7 +86,7 @@ func (p *paginator) getIntValueWithDefault(key string, defaultValue string) (int
 	valueStr := p.ctx.DefaultQuery(key, defaultValue)
 	value, err := strconv.Atoi(valueStr)
 	if err != nil {
-		return 0, fmt.Errorf("'%s' parameter must be an integer", key)
+		return 0, fmt.Errorf("%s parameter must be an integer", key)
 	}
 
 	return value, nil
