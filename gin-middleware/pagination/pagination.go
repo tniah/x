@@ -62,7 +62,7 @@ type paginator struct {
 }
 
 func (p *paginator) abortWithError(err error) {
-	he := httperrors.New(http.StatusBadRequest, err.Error(), p.opts.ErrReason)
+	he := httperrors.New(http.StatusBadRequest, p.opts.ErrReason, err.Error())
 	he.WithDetails(&httperrors.ErrorInfo{
 		Reason: he.Reason(),
 		Domain: p.opts.ErrInfoDomain,
