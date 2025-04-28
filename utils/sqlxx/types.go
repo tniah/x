@@ -1,6 +1,7 @@
 package sqlxx
 
 import (
+	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
@@ -32,4 +33,32 @@ func (m StringSliceJSON) Value() (driver.Value, error) {
 
 	encoded, err := json.Marshal(&m)
 	return string(encoded), errors.WithStack(err)
+}
+
+type NullString string
+
+func NewNullString(s string) NullString {
+	return NullString(s)
+}
+
+func (n *NullString) Scan(value interface{}) error {
+	var v sql.NullString
+	if err := (&v).Scan(value); err != nil {
+		return err
+	}
+
+	*n = NullString(v.String)
+	return nil
+}
+
+func (ns NullString) Value() (driver.Value, error) {
+	if len(ns) == 0 {
+		return sql.NullString{}.Value()
+	}
+
+	return sql.NullString{Valid: true, String: string(ns)}.Value()
+}
+
+func (ns NullString) String() string {
+	return string(ns)
 }
