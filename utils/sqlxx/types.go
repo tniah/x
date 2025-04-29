@@ -62,3 +62,48 @@ func (ns NullString) Value() (driver.Value, error) {
 func (ns NullString) String() string {
 	return string(ns)
 }
+
+type NullInt64 struct {
+	Int   int64
+	Valid bool
+}
+
+func (ns *NullInt64) Scan(value interface{}) error {
+	var d = sql.NullInt64{}
+	if err := (&d).Scan(value); err != nil {
+		return err
+	}
+
+	ns.Int = d.Int64
+	ns.Valid = d.Valid
+	return nil
+}
+
+func (ns NullInt64) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+
+	return ns.Int, nil
+}
+
+func (ns NullInt64) MarshalJSON() ([]byte, error) {
+	if !ns.Valid {
+		return []byte("null"), nil
+	}
+
+	return json.Marshal(ns.Int)
+}
+
+func (ns *NullInt64) UnmarshalJSON(data []byte) error {
+	if ns == nil {
+		return errors.New("json.RawMessage: UnmarshalJSON on nil pointer")
+	}
+
+	if len(data) == 0 || string(data) == "null" {
+		return nil
+	}
+
+	ns.Valid = true
+	return errors.WithStack(json.Unmarshal(data, &ns.Int))
+}
