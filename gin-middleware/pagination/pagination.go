@@ -71,7 +71,6 @@ func (p *paginator) abortWithError(err error) {
 		},
 	})
 	p.ctx.AbortWithStatusJSON(he.HttpCode(), he)
-	return
 }
 
 func (p *paginator) getPageFromQuery() (int, error) {
